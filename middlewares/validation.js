@@ -4,7 +4,6 @@ const { isUrl } = require('../utils/regularExp');
 const validateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.required(),
     name: Joi.string().required().min(2).max(30),
   }),
 });

@@ -16,7 +16,7 @@ const {
 } = http2.constants;
 
 const getUser = (req, res, next) => {
-  const { id } = req.user;
+  const id = req.user._id;
   User.findById(id)
     .then((user) => {
       res.send(user);
@@ -26,9 +26,8 @@ const getUser = (req, res, next) => {
 
 const updateUserInfo = (req, res, next) => {
   const { name, email } = req.body;
-  const { id } = req.user;
-
-  User.findByIdAndUpdate(id, { name, email }, { new: true, runValidators: true, upsert: false })
+  const id = req.user._id;
+  User.findByIdAndUpdate(id, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
