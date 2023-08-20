@@ -1,6 +1,6 @@
 const Movie = require('../models/movie');
-const { NotFoundError } = require('../erorrs/notFound');
-const { ForbiddenError } = require('../erorrs/forbiddenError');
+const NotFoundError = require('../erorrs/notFound');
+const ForbiddenError = require('../erorrs/forbiddenError');
 
 const returnMovies = (req, res, next) => {
   const ownerId = req.user._id;

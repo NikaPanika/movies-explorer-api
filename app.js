@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -9,15 +8,14 @@ const cors = require('cors');
 const routes = require('./routes/index');
 const error = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const { PORT = 3000 } = process.env;
+const { PORT, dataMovies } = require('./utils/config');
 
 const app = express();
 app.use(express.json());
 
 app.use(helmet());
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(dataMovies, {
   useNewUrlParser: true,
 });
 

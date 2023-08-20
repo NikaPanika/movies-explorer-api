@@ -1,19 +1,13 @@
-const http2 = require('http2');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const { NotFoundError } = require('../erorrs/notFound');
-const { BadRequest } = require('../erorrs/badRequest');
-const { DuplicationError } = require('../erorrs/dataDuplication');
-const { AuthError } = require('../erorrs/authError');
-
-const { JWT_SECRET = 'strange-secret-key' } = process.env;
-const { NODE_ENV } = process.env;
-
-const {
-  HTTP_STATUS_CREATED,
-} = http2.constants;
+const NotFoundError = require('../erorrs/notFound');
+const BadRequest = require('../erorrs/badRequest');
+const DuplicationError = require('../erorrs/dataDuplication');
+const AuthError = require('../erorrs/authError');
+const { JWT_SECRET, NODE_ENV } = require('../utils/config');
+const { HTTP_STATUS_CREATED } = require('../utils/constants');
 
 const getUser = (req, res, next) => {
   const id = req.user._id;
@@ -35,7 +29,9 @@ const updateUserInfo = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.code === 11000) {
+        next(new DuplicationError('Пользователь с таким Email уже существует'));
+      } else if (err.name === 'ValidationError') {
         next(new BadRequest('Невалидные данные'));
       } else {
         next(err);
