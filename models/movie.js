@@ -54,6 +54,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdd: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model('movie', movieSchema);
